@@ -1,6 +1,6 @@
-Env: "local"
-Port: 42069
-AppName: "kafka-processor"
+Env: "Local"
+Port: 6080
+AppName: "example-app"
 ComponentConfigs:
   Client:
     Timeout: 15
@@ -10,4 +10,15 @@ ComponentConfigs:
     DisableCompression: 2
     InsecureSkipVerify: 1
 Services:
+  - Name: "CocktailApi"
+    URL: "https://www.thecocktaildb.com/api.php"
+    ApiKeyEnvironmentVariable: "API_KEY"
+    PublicKeyEnvironmentVariable: "PUBLIC_KEY"
 Databases:
+  - Name: "PostgresDB"
+    Database: "postgres"
+    Server: "db.example.supabase.co:5432"
+    Username: "postgres"
+    Scheme: "postgres"
+    AuthRequired: "true"
+    AuthEnvironmentVariable: "DB_PASSWORD_DEV"
