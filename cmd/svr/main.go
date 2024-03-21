@@ -1,13 +1,13 @@
 package main
 
 import (
-	"log"
 	"net/http"
-	log "github.com/sirupsen/logrus"
+
 	"github.com/gazmirmazari/config"
-	"github.com/gazmirmazari/config/logging"
-	"github.com/gazmirmazari/internal/routes"
+	"github.com/gazmirmazari/kafka_processor/internal/routes"
+
 	"github.com/gorilla/handlers"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -18,13 +18,14 @@ func main() {
 	defer quit()
 
 	// Get the config first
+
 	appConfig := config.New(configPath)
 
 	// Set logging level
-	logging.SetLevel(log.Level(appConfig.Logging.Level))
+	// logging.SetLevel(log.Level(appConfig.Logging.Level))
 
 	// Initialize the router
-	router := routes.InitRouter()
+	router := routes.Handler.InitRouter() // Pass the required argument
 
 	// Use gzip for the handler
 	gzippedRouter := handlers.CompressHandler(router)
@@ -32,9 +33,6 @@ func main() {
 	// Serve the router
 	log.Fatal(http.ListenAndServe(appConfig.Port, gzippedRouter))
 }
-
-
-
 
 func quit() {
 	if r := recover(); r != nil {
